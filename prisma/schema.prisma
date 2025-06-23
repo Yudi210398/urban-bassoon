@@ -20,11 +20,12 @@ enum Role {
 }
 
 model Users {
-  id       Int    @id @default(autoincrement())
-  nama     String @db.VarChar(100)
-  email    String @unique @db.VarChar(100)
-  password String @db.VarChar(100)
-  role     Role   @default(USER)
+  id       Int      @id @default(autoincrement())
+  nama     String   @db.VarChar(100)
+  email    String   @unique @db.VarChar(100)
+  password String   @db.VarChar(100)
+  role     Role     @default(USER)
+  Boking   Boking[]
 
   @@map("users")
 }
@@ -36,4 +37,23 @@ model Admin {
   password String @db.VarChar(100)
 
   @@map("admin")
+}
+
+model Barang {
+  id     Int      @id @default(autoincrement())
+  nama   String   @db.VarChar(100)
+  Boking Boking[]
+
+  @@map("barang")
+}
+
+model Boking {
+  id       Int    @id @default(autoincrement())
+  userId   Int    @db.Integer
+  user     Users  @relation(fields: [userId], references: [id])
+  session  Int    @db.Integer
+  barangId Int    @db.Integer
+  barang   Barang @relation(fields: [barangId], references: [id])
+
+  @@map("boking")
 }
